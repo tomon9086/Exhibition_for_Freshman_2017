@@ -1,4 +1,5 @@
 const Vector3 = gr.lib.math.Vector3;
+let frameLoaded = 0;
 gr.registerComponent('Gravity', {
 	attributes: {
 		mass: {
@@ -72,6 +73,7 @@ gr.registerComponent("SteliteMotion", {
 		this.distanceSum = 0;
 	},
 	$update: function() {
+		frameLoaded++;
 		// const gravityConst = 6.67259 * Math.pow(10, -11);
 		const gravityConst = 6.67259;
 		const scene = this.node.tree("scene").first();
@@ -99,10 +101,12 @@ gr.registerComponent("SteliteMotion", {
 		});
 		// debug ui
 		this.run = document.getElementById("isRunning").checked;
-		if(!this.run) {
+		if(!this.run || frameLoaded < 10) {		// ロードが終わらないうちに実行するとposition(0,0,0)で始まるバグ対策
 			const angle = - Number(document.getElementById("angle").value);
 			const elementalVector = new Vector3(Math.cos(angle * Math.PI / 180), Math.sin(angle * Math.PI / 180), 0);
-			const initSpeed = Number(document.getElementById("speed").value) * 0.01 + Math.sqrt(2 * gravityConst / this.earth.distSatelite);
+			let speed = Number(document.getElementById("speed").value);
+			if(!(speed <= 100 && speed >= -100))speed = 0;
+			const initSpeed = speed * 0.01 + Math.sqrt(2 * gravityConst / this.earth.distSatelite);
 			const earthPos = this.earth.getComponent("Transform").globalPosition;
 			const initPosition = earthPos.addWith(elementalVector.multiplyWith(Math.sqrt(Math.pow(this.earth.getAttribute("scale").magnitude, 2) / 3)));
 			initPosition.Z = this.initZPos;
@@ -113,6 +117,7 @@ gr.registerComponent("SteliteMotion", {
 			});
 			this.prevPos = this.node.getAttribute("position");
 			this.distanceSum = 0;
+			document.getElementById("isRunning").checked = false;
 		}
 		// end debug ui
 		if(this.run) {
