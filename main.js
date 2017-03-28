@@ -106,6 +106,9 @@ gr.registerComponent("SteliteMotion", {
 			initPosition.Z = this.initZPos;
 			this.velocity = elementalVector.multiplyWith(initSpeed);
 			this.node.setAttribute("position", initPosition);
+			gr("#main")("#starGroup").nodes[0][0].tree("scene").first().getComponentsInChildren("Star").forEach(function(v, i) {
+				v.node.setAttribute("enabled", true);
+			});
 		}
 		// end debug ui
 		if(this.run) {

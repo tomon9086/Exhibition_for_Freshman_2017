@@ -7,7 +7,7 @@
 			<planet id="earth" texture="./img/earth.png" />
 			<arrow id="arrow" scale="4,8,0" />
 		</object>
-		<planet position="-100,-30,0" texture="./img/mercury.png" />
+		<planet position="-110,-30,0" texture="./img/mercury.png" />
 		<planet position="0,100,0" mass="3" texture="./img/jupiter.png" />
 		<planet position="160,20,0" texture="./img/neptune.png" />
 		<object position="190,-60,0">
