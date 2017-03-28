@@ -68,6 +68,8 @@ gr.registerComponent("SteliteMotion", {
 		this.initZPos = this.node.getAttribute("position").Z;
 		console.log(this.node.tree("scene").first().children.map(function(v) { return v._root.element; }));
 		// this.planets = this.node.tree("scene").first().getComponentsInChildren("Gravity");
+		this.prevPos = this.node.getAttribute("position");
+		this.distanceSum = 0;
 	},
 	$update: function() {
 		// const gravityConst = 6.67259 * Math.pow(10, -11);
@@ -109,6 +111,8 @@ gr.registerComponent("SteliteMotion", {
 			gr("#main")("#starGroup").nodes[0][0].tree("scene").first().getComponentsInChildren("Star").forEach(function(v, i) {
 				v.node.setAttribute("enabled", true);
 			});
+			this.prevPos = this.node.getAttribute("position");
+			this.distanceSum = 0;
 		}
 		// end debug ui
 		if(this.run) {
@@ -132,6 +136,8 @@ gr.registerComponent("SteliteMotion", {
 				return;
 			}
 			this.node.setAttribute("position", nextPos);
+			this.distanceSum += nextPos.subtractWith(this.prevPos).magnitude;
+			document.getElementById("distanceDisplay").innerText = this.distanceSum / 100|0;
 		}
 	}
 });
