@@ -1,0 +1,18 @@
+/*.display {
+	border: 0;
+	width: 1000px;
+	height: 600px;
+	background-color: #140041;
+}*/
+
+html, body {
+  overflow: hidden;
+}
+
+body {
+	background-color: #140041;
+}
+
+.debug {
+	color: #FFF;
+}

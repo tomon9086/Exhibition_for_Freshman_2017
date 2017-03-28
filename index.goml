@@ -1,0 +1,27 @@
+<goml width="fit" height="fit">
+	<scene>
+		<!-- orthosize -> debug: 80, product: 120 -->
+		<camera position="0,0,70" orthoSize="120" orthogonal="true" />
+		<!-- JSから大きさなどをいじるので、EarthとSaturn(_ring)とoctopusはid属性をつけること -->
+		<object position="-200,60,0">
+			<planet id="earth" texture="./img/earth.png" />
+			<arrow id="arrow" scale="4,8,0" />
+		</object>
+		<planet position="-100,-30,0" texture="./img/mercury.png" />
+		<planet position="0,100,0" mass="3" texture="./img/jupiter.png" />
+		<planet position="160,20,0" texture="./img/neptune.png" />
+		<object position="190,-60,0">
+			<planet id="saturn" mass="3" texture="./img/saturn.png" />
+			<mesh geometry="quad" id="saturn_ring" rotation="-65,-15,0" texture="./img/saturn_ring.png" />
+			<mesh geometry="quad" id="octopus" position="0,0,0" texture="./img/octopus.png" />
+			<mesh geometry="quad" id="balloon" enabled="false" texture="./img/balloon.png" />
+		</object>
+		<object id="starGroup">
+			<star />
+			<star />
+			<star />
+			<star />
+		</object>
+		<satelite id="satelite" position="0,0,50" scale="5" geometry="quad" texture="./img/satelite.png" />
+	</scene>
+</goml>
