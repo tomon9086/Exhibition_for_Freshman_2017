@@ -195,5 +195,5 @@ function gameover(type, failedStarsNum) {
 	alert(msg);
 	// gr("#main")("#balloon").nodes[0][0].enabled = true;
 	console.log(msg);
-	// document.getElementById("isRunning").checked = false;
+	document.getElementById("isRunning").checked = false;
 }
