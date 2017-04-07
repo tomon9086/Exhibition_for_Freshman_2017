@@ -264,8 +264,8 @@ gr(function() {
 	gr("#main")("#balloon").setAttribute("scale", balloonScale);
 	gr("#main")("#balloon").setAttribute("position", new Vector3(-saturnScaleAve * 3.5, saturnScaleAve * 3.5, saturnScaleAve + 10));
 
-	// const starPosArray = [[-116,40,0],[-3,17,0],[127,26,0],[173,-10,0]];	// for debugging -> angle = 12, velocity = 11    54, 11 ?
-	const starPosArray = [[-170,40,0],[-140,-60,0],[50,-70,0],[173,-15,0]];	// for debugging -> angle = 2017, velocity = 4
+	const starPosArray = [[-116,40,0],[-3,17,0],[127,26,0],[173,-10,0]];	// for debugging -> angle = 12, velocity = 11    54, 11 ?
+	// const starPosArray = [[-170,40,0],[-140,-60,0],[50,-70,0],[173,-15,0]];	// for debugging -> angle = 2017, velocity = 4
 	gr("#main")("#starGroup").nodes[0][0].tree("scene").first().getComponentsInChildren("Star").forEach(function(v, i) {
 		const initZPos = v.node.getAttribute("position").Z;
 		v.node.setAttribute("position", new Vector3(starPosArray[i][0],starPosArray[i][1],initZPos));
