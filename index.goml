@@ -1,7 +1,7 @@
 <goml width="fit" height="fit">
 	<scene>
 		<!-- orthosize -> debug: 80, product: 120 -->
-		<camera position="0,0,70" orthoSize="120" orthogonal="true" />
+		<camera position="0,30,70" orthoSize="120" orthogonal="true" />
 		<!-- JSから大きさなどをいじるので、EarthとSaturn(_ring)とoctopusはid属性をつけること -->
 		<object position="-200,60,0">
 			<planet id="earth" texture="./img/earth.png" />
@@ -23,5 +23,7 @@
 			<star />
 		</object>
 		<satelite id="satelite" position="0,0,50" scale="5" geometry="quad" texture="./img/satelite.png" />
+		<rupe />
+		<velocityarrow enabled="false" />
 	</scene>
 </goml>

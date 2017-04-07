@@ -1,5 +1,7 @@
 const Vector3 = gr.lib.math.Vector3;
 let frameLoaded = 0;
+let sateliteObj = {};
+let rupeComponent = {};
 gr.registerComponent('Gravity', {
 	attributes: {
 		mass: {
@@ -66,6 +68,7 @@ gr.registerComponent("SteliteMotion", {
 	},
 	$mount: function() {
 		this.__bindAttributes();
+		sateliteObj = this;
 		this.initZPos = this.node.getAttribute("position").Z;
 		console.log(this.node.tree("scene").first().children.map(function(v) { return v._root.element; }));
 		// this.planets = this.node.tree("scene").first().getComponentsInChildren("Gravity");
@@ -144,6 +147,9 @@ gr.registerComponent("SteliteMotion", {
 			this.distanceSum += nextPos.subtractWith(this.prevPos).magnitude;
 			document.getElementById("distanceDisplay").innerText = this.distanceSum / 100|0;
 		}
+		// ルーペのenableをいじる
+		// rupeComponent.node.enabled = Math.abs(rupeComponent.x) > rupeComponent.xThreshold || Math.abs(rupeComponent.y) > rupeComponent.yThreshold;
+		// console.log(Math.abs(rupeComponent.x), rupeComponent.xThreshold, Math.abs(rupeComponent.y), rupeComponent.yThreshold);
 	}
 });
 
@@ -172,6 +178,79 @@ gr.registerNode("star", ["Star"], {
 	scale: "5",
 	position: "0,0,30",
 	texture: "./img/star.png",
+}, "mesh");
+
+gr.registerComponent("Rupe", {
+	attributes: {
+	},
+	$mount: function() {
+		rupeComponent = this;
+		this.initZPos = this.node.getAttribute("position").Z;
+		this.cameraNode = this.node._parent.getChildrenByNodeName("camera")[0];
+	},
+	$update: function() {
+		const near = this.cameraNode.getAttribute("near");
+		const far = this.cameraNode.getAttribute("far");
+		const aspect = this.cameraNode.getAttribute("aspect");
+		const orthoSize = this.cameraNode.getAttribute("orthoSize");
+		const cameraPosition = this.cameraNode.getAttribute("position");
+
+		const satelitePos = sateliteObj.node.getAttribute("position");
+		this.x = satelitePos.X - cameraPosition.X;
+		this.y = satelitePos.Y - cameraPosition.Y;
+		this.xPN = this.x / Math.abs(this.x);
+		this.yPN = this.y / Math.abs(this.y);
+
+		// this.xThreshold = 280;
+		this.xThreshold = (cameraPosition.X + orthoSize) * aspect - 15;
+		// this.yThreshold = 120;
+		this.yThreshold = cameraPosition.Y + orthoSize - 0;
+		// console.log(this.xThreshold, this.yThreshold);
+		let rupePos = new Vector3(satelitePos.X, satelitePos.Y, this.initZPos);
+		if(Math.abs(this.x) < this.xThreshold && Math.abs(this.y) < this.yThreshold)rupePos = new Vector3(0,0,-1000);	// 仕方ない。衛星が範囲内にいるとき、見えなくする。
+		// console.log(Math.abs(this.x) > this.xThreshold || Math.abs(this.y) > this.yThreshold);
+		if(Math.abs(this.x) > this.xThreshold && Math.abs(this.y) > this.yThreshold) {
+			rupePos = new Vector3((this.xThreshold) * this.xPN - (this.node.getAttribute("scale").X) * (this.xPN - 1) - 20, (this.yThreshold - 25) * this.yPN - (this.node.getAttribute("scale").Y + 10) * (this.yPN - 1), this.initZPos);
+			this.node.setAttribute("rotation", "0,0," + (90 - 90 * this.yPN - 45 * this.xPN * this.yPN));
+		}
+		if(Math.abs(this.x) > this.xThreshold && Math.abs(this.y) < this.yThreshold) {
+			rupePos.X = this.xThreshold * this.xPN - (this.node.getAttribute("scale").X) * (this.xPN - 1) - 20;
+			this.node.setAttribute("rotation", "0,0," + (-90 * this.xPN));
+		}
+		if(Math.abs(this.x) < this.xThreshold && Math.abs(this.y) > this.yThreshold) {
+			rupePos.Y = (this.yThreshold - 20) * this.yPN - (this.node.getAttribute("scale").Y + 10) * (this.yPN - 1);
+			this.node.setAttribute("rotation", "0,0," + (90 - 90 * this.yPN));
+		}
+		this.node.setAttribute("position", rupePos);
+	}
+});
+
+gr.registerNode("rupe", ["Rupe"], {
+	geometry: "quad",
+	scale: "20",
+	position: "0,0,60",
+	texture: "./img/rupe.png",
+}, "mesh");
+
+gr.registerComponent("Velocityarrow", {
+	attributes: {
+		angle: {
+			default: "0",
+			converter: "Number"
+		}
+	},
+	$mount: function() {
+		this.__bindAttributes();
+		// console.log(this.node.getAttribute("scale"));
+		// console.log(this.node._parent);
+	},
+	$update: function() {
+	}
+});
+
+gr.registerNode("velocityarrow", ["Velocityarrow"], {
+	geometry: "quad",
+	texture: "./img/arrow.png",
 }, "mesh");
 
 

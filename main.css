@@ -15,6 +15,13 @@ body {
 
 .debug {
 	color: #FFF;
+	font-size: 25px;
+}
+
+.ui {
+	height: 30px;
+	border: 0;
+	font-size: 20px;
 }
 
 .grimoireDiplay {
