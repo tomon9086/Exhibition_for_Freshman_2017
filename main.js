@@ -202,7 +202,7 @@ gr.registerComponent("Rupe", {
 		this.yPN = this.y / Math.abs(this.y);
 
 		// this.xThreshold = 280;
-		this.xThreshold = (cameraPosition.X + orthoSize) * aspect - 15;
+		this.xThreshold = (cameraPosition.X + orthoSize) * aspect - 0;
 		// this.yThreshold = 120;
 		this.yThreshold = cameraPosition.Y + orthoSize - 0;
 		// console.log(this.xThreshold, this.yThreshold);
